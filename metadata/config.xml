@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "../lib-common/config-1.2.dtd">
+
+<module configVersion="1.2">
+	
+	<!-- Base Module Properties -->
+	<id>quickprograms</id>
+	<name>Quick Programs</name>
+	<version>0.1</version>
+	<package>org.openmrs.module.quickprograms</package>
+	<author>Christian Neumann, Partners In Health</author>
+	<description>
+			Quick way to manage programs and state transitions
+	</description>
+
+	<activator>org.openmrs.module.quickprograms.QuickProgramsActivator</activator>
+	
+	<require_version>1.5.2</require_version>
+
+	<require_modules>
+		<require_module>org.openmrs.module.programlocation</require_module>
+	</require_modules>
+
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	
+	<extension>
+		<point>org.openmrs.patientDashboard.overviewBox</point>
+		<class>org.openmrs.module.quickprograms.extension.html.QuickProgramsBoxExt</class>
+	</extension>
+
+</module>
+
