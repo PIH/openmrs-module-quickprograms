@@ -29,7 +29,7 @@
 <table cellspacing="0" cellpadding="2">
 	<tr>
 		<td>HIV Program:</td>
-		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="7,87" initialStateIds="1,7" terminalStateIds="2" /><br /></td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="7,87" initialStateIds="120,1,7" terminalStateIds="2" /><br /></td>
 	</tr>
 	<tr>
 		<td>Chronic Care Program:</td>
