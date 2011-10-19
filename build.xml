@@ -39,7 +39,7 @@
 			<fileset dir="lib-common">
 				<include name="**/*.jar"/>
 			</fileset>
-			<fileset dir="../openmrs-1.5.x/lib">
+			<fileset dir="../openmrs-1.7.x/lib">
 				<include name="**/*.jar"/>
 			</fileset>
 			<fileset dir="../programlocation/dist">
