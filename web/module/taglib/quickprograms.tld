@@ -5,7 +5,7 @@
 	version="2.0">
 
 	<description>Quick Programs Taglib</description>
-	<tlib-version>1.0</tlib-version>
+	<tlib-version>1.1</tlib-version>
 	<short-name>quickprogramstaglib</short-name>
 
 	<tag>
@@ -30,6 +30,11 @@
 		<attribute>
 			<name>terminalStateIds</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>defaultLocation</name>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>

@@ -32,6 +32,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 	private String stateIds;
 	private String initialStateIds;
 	private String terminalStateIds;
+	private String defaultLocation;
 
 	public Integer getPatientId() {
 		return patientId;
@@ -64,6 +65,14 @@ public class QuickProgramsTag extends BodyTagSupport {
 	public void setTerminalStateIds(String terminalStateIds) {
 		this.terminalStateIds = terminalStateIds;
 	}
+	
+    public String getDefaultLocation() {
+    	return defaultLocation;
+    }
+	
+    public void setDefaultLocation(String defaultLocation) {
+    	this.defaultLocation = defaultLocation;
+    }
 
 	public int doStartTag() throws JspException {
 		JspWriter o = pageContext.getOut();
@@ -152,7 +161,11 @@ public class QuickProgramsTag extends BodyTagSupport {
 		s += " at <select name=\"locationId\">\n";
 		s += "<option value=\"\">Choose a location...</option>\n";
 		for (Location l : Context.getLocationService().getAllLocations(false)) {
-			s += "<option value=\"" + l.getId() + "\">" + l.getName() + "</option>\n";
+			if (getDefaultLocation() != null && l.getId().equals(new Integer(getDefaultLocation()))) {
+				s += "<option value=\"" + l.getId() + " selected\">" + l.getName() + "</option>\n";
+			} else {
+				s += "<option value=\"" + l.getId() + "\">" + l.getName() + "</option>\n";
+			}
 		}
 		s += "</select>\n";				
 		s += "</form>";
@@ -218,6 +231,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 		terminalStateIds = null;
 		stateIds = null;
 		initialStateIds = null;
+		defaultLocation = null;
 		return EVAL_PAGE;
 	}
 }

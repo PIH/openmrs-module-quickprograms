@@ -33,6 +33,10 @@
 	</tr>
 	<tr>
 		<td>Chronic Care Program:</td>
-		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="83" terminalStateIds="" /></td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="83" terminalStateIds="" defaultLocation="2"/></td>
+	</tr>
+	<tr>
+		<td>TB Program:</td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="19" terminalStateIds="" defaultLocation="2"/></td>
 	</tr>
 </table>
