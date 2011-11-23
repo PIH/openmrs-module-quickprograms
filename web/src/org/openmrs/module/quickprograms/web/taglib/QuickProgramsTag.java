@@ -150,14 +150,14 @@ public class QuickProgramsTag extends BodyTagSupport {
 			ProgramWorkflowState pws) {
 		String s = "";
 		s += "<form method=\"post\" action=\"/openmrs/module/quickprograms/enrollInProgramWithStateOnDateAtLocation.form\">\n";
-		s += "<input id=\"quickEnrollSubmitButton\" type=\"submit\" value=\"Enroll\"/>\n";
+		s += "<input id=\"quickEnrollSubmitButton-" + pws.getId() + "\" type=\"submit\" value=\"Enroll\"/>\n";
 		s += "<input type=\"hidden\" name=\"method\" value=\"enroll\"/>\n";
 		s += "<input type=\"hidden\" name=\"patientId\" value=\"" + patient.getId() + "\"/>\n";
 		s += "<input type=\"hidden\" name=\"returnPage\" value=\"/openmrs/patientDashboard.form?patientId=" + patient.getId() + "\"/>\n";
 		s += "<input type=\"hidden\" name=\"programId\" value=\"" + program.getId() + "\"/>\n";
 		s += "<input type=\"hidden\" name=\"programworkflowStateId\" value=\"" + pws.getId() + "\"/>\n";
 		s += " with " + pws.getConcept().getName() + " on \n";
-		s += dateTag("dateEnrolled") + "\n";
+		s += dateTag("dateEnrolled-" + pws.getId()) + "\n";
 		s += " at <select name=\"locationId\">\n";
 		s += "<option value=\"\">Choose a location...</option>\n";
 		for (Location l : Context.getLocationService().getAllLocations(false)) {
