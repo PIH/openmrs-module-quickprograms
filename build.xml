@@ -76,7 +76,7 @@
 		</javac>
 	</target>
 	
-	<target name="package-module" depends="compile-module" description="Packages module into jar file">
+	<target name="package-module" depends="clean,compile-module" description="Packages module into jar file">
 		<mkdir dir="dist" />
 		
 		<!-- Copy module metadata -->

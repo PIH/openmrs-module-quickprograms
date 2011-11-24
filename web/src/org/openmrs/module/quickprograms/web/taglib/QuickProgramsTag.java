@@ -112,7 +112,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 								+ " to "
 								+ pws.getConcept().getName()
 								+ " on "
-								+ dateTag("dateForPWS" + pws.getId()) 
+								+ dateTag("dateForPWS" + pws.getId(), "dateForPWS") 
 								+ " at " + currentPatientProgram(program, patient).getLocation().getName() + "<br/>");
 						}
 					}
@@ -126,7 +126,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 								+ " with "
 								+ pws.getConcept().getName()
 								+ " on "
-								+ dateTag("dateForPWS" + pws.getId())
+								+ dateTag("dateForPWS" + pws.getId(), "dateForPWS")
 								+ " at " + currentPatientProgram(program, patient).getLocation().getName() + "<br/>");
 						}
 					}
@@ -157,7 +157,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 		s += "<input type=\"hidden\" name=\"programId\" value=\"" + program.getId() + "\"/>\n";
 		s += "<input type=\"hidden\" name=\"programworkflowStateId\" value=\"" + pws.getId() + "\"/>\n";
 		s += " with " + pws.getConcept().getName() + " on \n";
-		s += dateTag("dateEnrolled-" + pws.getId()) + "\n";
+		s += dateTag("dateEnrolled-" + pws.getId(), "dateEnrolled") + "\n";
 		s += " at <select name=\"locationId\">\n";
 		s += "<option value=\"\">Choose a location...</option>\n";
 		for (Location l : Context.getLocationService().getAllLocations(false)) {
@@ -192,8 +192,8 @@ public class QuickProgramsTag extends BodyTagSupport {
 				+ ")\" />";
 	}
 
-	private String dateTag(String id) {
-		return "<input type=\"text\" id=\"" + id + "\" name=\"" + id + "\" size=\"10\" onClick=\"showCalendar(this)\" value=\"" + today() + "\" />";
+	private String dateTag(String id, String name) {
+		return "<input type=\"text\" id=\"" + id + "\" name=\"" + name + "\" size=\"10\" onClick=\"showCalendar(this)\" value=\"" + today() + "\" />";
 	}
 
 	private String today() {

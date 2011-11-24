@@ -6,7 +6,7 @@
 	<!-- Base Module Properties -->
 	<id>quickprograms</id>
 	<name>Quick Programs</name>
-	<version>1.0</version>
+	<version>1.1</version>
 	<package>org.openmrs.module.quickprograms</package>
 	<author>Christian Neumann, Partners In Health</author>
 	<description>
