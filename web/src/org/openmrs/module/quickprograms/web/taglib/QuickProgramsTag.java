@@ -21,6 +21,7 @@ import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.programlocation.PatientProgram;
+import org.openmrs.util.OpenmrsConstants;
 
 public class QuickProgramsTag extends BodyTagSupport {
 
@@ -160,9 +161,14 @@ public class QuickProgramsTag extends BodyTagSupport {
 		s += dateTag("dateEnrolled-" + pws.getId(), "dateEnrolled") + "\n";
 		s += " at <select name=\"locationId\">\n";
 		s += "<option value=\"\">Choose a location...</option>\n";
+		String defaultLocationId = getDefaultLocation();
+		if (defaultLocationId == null || "".equals(defaultLocationId)) {
+			// no default location in jsp specified, so check if the user profile has one
+			defaultLocationId = Context.getUserContext().getAuthenticatedUser().getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
+		}
 		for (Location l : Context.getLocationService().getAllLocations(false)) {
-			if (getDefaultLocation() != null && l.getId().equals(new Integer(getDefaultLocation()))) {
-				s += "<option value=\"" + l.getId() + " selected\">" + l.getName() + "</option>\n";
+			if (defaultLocationId != null && l.getId().equals(new Integer(defaultLocationId))) {
+				s += "<option value=\"" + l.getId() + "\" selected>" + l.getName() + "</option>\n";
 			} else {
 				s += "<option value=\"" + l.getId() + "\">" + l.getName() + "</option>\n";
 			}
