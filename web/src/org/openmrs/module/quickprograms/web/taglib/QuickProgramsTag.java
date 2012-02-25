@@ -167,7 +167,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 			defaultLocationId = Context.getUserContext().getAuthenticatedUser().getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
 		}
 		for (Location l : Context.getLocationService().getAllLocations(false)) {
-			if (defaultLocationId != null && l.getId().equals(new Integer(defaultLocationId))) {
+			if (defaultLocationId != null && !"".equals(defaultLocationId) && l.getId().equals(new Integer(defaultLocationId))) {
 				s += "<option value=\"" + l.getId() + "\" selected>" + l.getName() + "</option>\n";
 			} else {
 				s += "<option value=\"" + l.getId() + "\">" + l.getName() + "</option>\n";
