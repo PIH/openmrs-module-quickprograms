@@ -78,19 +78,20 @@ public class QuickProgramsTag extends BodyTagSupport {
 	public int doStartTag() throws JspException {
 		JspWriter o = pageContext.getOut();
 
-		List<ProgramWorkflowState> states = getStates(stateIds);
-		List<ProgramWorkflowState> initialStates = getStates(initialStateIds);
-		List<ProgramWorkflowState> terminalStates = getStates(terminalStateIds);
-		Program program = initialStates.get(0).getProgramWorkflow()
-			.getProgram();
-		ProgramWorkflow programWorkflow = initialStates.get(0).getProgramWorkflow();
-		Patient patient = Context.getPatientService().getPatient(patientId);
-		PatientState currentState = null;
-		if (currentPatientProgram(program, patient) != null) {
-			currentState = currentPatientProgram(program, patient).getCurrentState(initialStates.get(0).getProgramWorkflow());
-		}
-
 		try {
+
+			List<ProgramWorkflowState> states = getStates(stateIds);
+			List<ProgramWorkflowState> initialStates = getStates(initialStateIds);
+			List<ProgramWorkflowState> terminalStates = getStates(terminalStateIds);
+			Program program = initialStates.get(0).getProgramWorkflow()
+				.getProgram();
+			ProgramWorkflow programWorkflow = initialStates.get(0).getProgramWorkflow();
+			Patient patient = Context.getPatientService().getPatient(patientId);
+			PatientState currentState = null;
+			if (currentPatientProgram(program, patient) != null) {
+				currentState = currentPatientProgram(program, patient).getCurrentState(initialStates.get(0).getProgramWorkflow());
+			}
+
 			boolean quickProgramsAvailable = false;
 			if (!patient.isDead()) {
 				if (!hasOpenProgramWorkflow(programWorkflow, patient)) {
@@ -221,8 +222,8 @@ public class QuickProgramsTag extends BodyTagSupport {
 	}
 
 	private List<ProgramWorkflowState> getStates(String ids) {
-		StringTokenizer st = new StringTokenizer(ids, ",");
 		List<ProgramWorkflowState> states = new ArrayList<ProgramWorkflowState>();
+		StringTokenizer st = new StringTokenizer(ids, ",");
 		while (st.hasMoreTokens()) {
 			String id = st.nextToken().trim();
 			ProgramWorkflowState state = Context.getProgramWorkflowService()

@@ -37,6 +37,6 @@
 	</tr>
 	<tr>
 		<td>TB Program:</td>
-		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="19" terminalStateIds="" defaultLocation="2"/></td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="92" terminalStateIds="" defaultLocation="2"/></td>
 	</tr>
 </table>
