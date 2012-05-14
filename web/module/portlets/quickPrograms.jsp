@@ -29,14 +29,14 @@
 <table cellspacing="0" cellpadding="2">
 	<tr>
 		<td>HIV Program:</td>
-		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="7,87" initialStateIds="120,1,7" terminalStateIds="2" /><br /></td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" initialStateIds="120,1,7" stateIds="7,87" terminalStateIds="2" /><br /></td>
 	</tr>
 	<tr>
 		<td>Chronic Care Program:</td>
-		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="83" terminalStateIds="" defaultLocation="2"/></td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" initialStateIds="83" defaultLocation="2"/></td>
 	</tr>
 	<tr>
 		<td>TB Program:</td>
-		<td><quickprograms:quickPrograms patientId="${model.patientId}" stateIds="" initialStateIds="92" terminalStateIds="" defaultLocation="2"/></td>
+		<td><quickprograms:quickPrograms patientId="${model.patientId}" initialStateIds="92" defaultLocation="2"/></td>
 	</tr>
 </table>

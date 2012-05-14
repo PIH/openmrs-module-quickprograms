@@ -2,7 +2,7 @@
 <!-- ********************************************************* -->
 <!-- ** Quick Programs                                      ** -->
 <!-- **	                                                    ** -->
-<!-- ** @author                                             ** -->
+<!-- ** @author Christian Neumann, Partners In Health       ** -->
 <!-- ** @version 1.0                                        ** -->
 <!-- ********************************************************* -->
 <project name="Quick Programs" default="package-module">

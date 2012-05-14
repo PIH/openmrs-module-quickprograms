@@ -1,3 +1,16 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 package org.openmrs.module.quickprograms.web.taglib;
 
 import java.io.IOException;
@@ -11,6 +24,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
@@ -23,6 +37,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.programlocation.PatientProgram;
 import org.openmrs.util.OpenmrsConstants;
 
+/**
+ * Encapsulates the functionality for providing a widget for changing program enrollment states
+ */
 public class QuickProgramsTag extends BodyTagSupport {
 
 	public static final long serialVersionUID = 128233353L;
@@ -35,46 +52,9 @@ public class QuickProgramsTag extends BodyTagSupport {
 	private String terminalStateIds;
 	private String defaultLocation;
 
-	public Integer getPatientId() {
-		return patientId;
-	}
-
-	public void setPatientId(Integer patientId) {
-		this.patientId = patientId;
-	}
-
-	public String getStateIds() {
-		return stateIds;
-	}
-
-	public void setStateIds(String stateIds) {
-		this.stateIds = stateIds;
-	}
-
-	public String getInitialStateIds() {
-		return initialStateIds;
-	}
-
-	public void setInitialStateIds(String initialStateIds) {
-		this.initialStateIds = initialStateIds;
-	}
-
-	public String getTerminalStateIds() {
-		return terminalStateIds;
-	}
-
-	public void setTerminalStateIds(String terminalStateIds) {
-		this.terminalStateIds = terminalStateIds;
-	}
-	
-    public String getDefaultLocation() {
-    	return defaultLocation;
-    }
-	
-    public void setDefaultLocation(String defaultLocation) {
-    	this.defaultLocation = defaultLocation;
-    }
-
+	/**
+	 * @see BodyTagSupport#doStartTag()
+	 */
 	public int doStartTag() throws JspException {
 		JspWriter o = pageContext.getOut();
 
@@ -83,10 +63,11 @@ public class QuickProgramsTag extends BodyTagSupport {
 			List<ProgramWorkflowState> states = getStates(stateIds);
 			List<ProgramWorkflowState> initialStates = getStates(initialStateIds);
 			List<ProgramWorkflowState> terminalStates = getStates(terminalStateIds);
-			Program program = initialStates.get(0).getProgramWorkflow()
-				.getProgram();
+			
 			ProgramWorkflow programWorkflow = initialStates.get(0).getProgramWorkflow();
+			Program program = programWorkflow.getProgram();
 			Patient patient = Context.getPatientService().getPatient(patientId);
+			
 			PatientState currentState = null;
 			if (currentPatientProgram(program, patient) != null) {
 				currentState = currentPatientProgram(program, patient).getCurrentState(initialStates.get(0).getProgramWorkflow());
@@ -98,11 +79,10 @@ public class QuickProgramsTag extends BodyTagSupport {
 					// no or closed program enrollment available
 					for (ProgramWorkflowState pws : initialStates) {
 						quickProgramsAvailable = true;
-						o.write(enrollForm(program,
-								patient,
-								pws));
+						o.write(enrollForm(program, patient, pws));
 					}
-				} else {
+				} 
+				else {
 					// open program enrollment available
 					for (ProgramWorkflowState pws : states) {
 						if (!(currentState != null && currentState.getState().equals(pws))) {
@@ -137,19 +117,22 @@ public class QuickProgramsTag extends BodyTagSupport {
 			if (!quickProgramsAvailable) {
 				o.write("(not available)<br/>");
 			}
-		} catch (Throwable e) {
+		} 
+		catch (Throwable e) {
 			try {
 				o.write("Unknown error, call help!");
-			} catch (IOException e1) {
-			}
+			} 
+			catch (IOException e1) { }
 			log.error("Could not write to pageContext", e);
 		}
 		release();
 		return SKIP_BODY;
 	}
 
-	private String enrollForm(Program program, Patient patient,
-			ProgramWorkflowState pws) {
+	/**
+	 * Private method for constructing a new program enrollment form
+	 */
+	private String enrollForm(Program program, Patient patient, ProgramWorkflowState pws) {
 		String s = "";
 		s += "<form method=\"post\" action=\"/openmrs/module/quickprograms/enrollInProgramWithStateOnDateAtLocation.form\">\n";
 		s += "<input id=\"quickEnrollSubmitButton-" + pws.getId() + "\" type=\"submit\" value=\"Enroll\"/>\n";
@@ -179,17 +162,21 @@ public class QuickProgramsTag extends BodyTagSupport {
 		return s;
 	}
 
-	private PatientProgram currentPatientProgram(Program program,
-			Patient patient) {
+	/**
+	 * Utility method for retrieving the current Patient Program for a given Program and Patient
+	 */
+	private PatientProgram currentPatientProgram(Program program, Patient patient) {
 		List<org.openmrs.PatientProgram> pps = Context.getProgramWorkflowService()
-				.getPatientPrograms(patient, program, null, null, new Date(),
-						null, false);
+				.getPatientPrograms(patient, program, null, null, new Date(), null, false);
 		if (pps.size() == 1) {
 			return (PatientProgram) pps.get(0);
 		}
 		return null;
 	}
 
+	/**
+	 * Utility method for writing a change state field
+	 */
 	private String changeToStateSubmitTag(String label,
 			PatientProgram patientProgram, ProgramWorkflow workflow,
 			ProgramWorkflowState state, String dateField) {
@@ -199,19 +186,21 @@ public class QuickProgramsTag extends BodyTagSupport {
 				+ ")\" />";
 	}
 
+	/**
+	 * Utility method for constructing a date field
+	 */
 	private String dateTag(String id, String name) {
-		return "<input type=\"text\" id=\"" + id + "\" name=\"" + name + "\" size=\"10\" onClick=\"showCalendar(this)\" value=\"" + today() + "\" />";
+		String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+		return "<input type=\"text\" id=\"" + id + "\" name=\"" + name + "\" size=\"10\" onClick=\"showCalendar(this)\" value=\"" + today + "\" />";
 	}
 
-	private String today() {
-		return new SimpleDateFormat("dd/MM/yyyy").format(new Date());
-	}
-
+	/**
+	 * Private utility method for returning whether a patient has a currently active state in the passed program workflow
+	 */
 	private boolean hasOpenProgramWorkflow(ProgramWorkflow programWorkflow, Patient patient) {
 		// hm, it feels like there should be a *much* better way...
 		for (org.openmrs.PatientProgram pp : Context.getProgramWorkflowService()
-				.getPatientPrograms(patient, programWorkflow.getProgram(), null, null, new Date(),
-						null, false)) {
+				.getPatientPrograms(patient, programWorkflow.getProgram(), null, null, new Date(), null, false)) {
 			for (PatientState ps : pp.getStates()) {
 				if (ps.getState().getProgramWorkflow().equals(programWorkflow)) {
 					return true;
@@ -221,18 +210,25 @@ public class QuickProgramsTag extends BodyTagSupport {
 		return false;
 	}
 
-	private List<ProgramWorkflowState> getStates(String ids) {
+	/**
+	 * Private utility method for returning a List of States from a comma separated string of state ids
+	 */
+	@SuppressWarnings("deprecation")
+    private List<ProgramWorkflowState> getStates(String ids) {
 		List<ProgramWorkflowState> states = new ArrayList<ProgramWorkflowState>();
-		StringTokenizer st = new StringTokenizer(ids, ",");
-		while (st.hasMoreTokens()) {
-			String id = st.nextToken().trim();
-			ProgramWorkflowState state = Context.getProgramWorkflowService()
-					.getState(new Integer(id));
-			states.add(state);
+		if (StringUtils.isNotBlank(ids)) {
+			StringTokenizer st = new StringTokenizer(ids, ",");
+			while (st.hasMoreTokens()) {
+				String id = st.nextToken().trim();
+				states.add(Context.getProgramWorkflowService().getState(new Integer(id)));
+			}
 		}
 		return states;
 	}
 
+	/**
+	 * @see BodyTagSupport#doEndTag()
+	 */
 	public int doEndTag() {
 		patientId = null;
 		terminalStateIds = null;
@@ -241,4 +237,74 @@ public class QuickProgramsTag extends BodyTagSupport {
 		defaultLocation = null;
 		return EVAL_PAGE;
 	}
+	
+    /**
+     * @return the patientId
+     */
+    public Integer getPatientId() {
+    	return patientId;
+    }
+	
+    /**
+     * @param patientId the patientId to set
+     */
+    public void setPatientId(Integer patientId) {
+    	this.patientId = patientId;
+    }
+	
+    /**
+     * @return the stateIds
+     */
+    public String getStateIds() {
+    	return stateIds;
+    }
+	
+    /**
+     * @param stateIds the stateIds to set
+     */
+    public void setStateIds(String stateIds) {
+    	this.stateIds = stateIds;
+    }
+	
+    /**
+     * @return the initialStateIds
+     */
+    public String getInitialStateIds() {
+    	return initialStateIds;
+    }
+	
+    /**
+     * @param initialStateIds the initialStateIds to set
+     */
+    public void setInitialStateIds(String initialStateIds) {
+    	this.initialStateIds = initialStateIds;
+    }
+	
+    /**
+     * @return the terminalStateIds
+     */
+    public String getTerminalStateIds() {
+    	return terminalStateIds;
+    }
+
+    /**
+     * @param terminalStateIds the terminalStateIds to set
+     */
+    public void setTerminalStateIds(String terminalStateIds) {
+    	this.terminalStateIds = terminalStateIds;
+    }
+	
+    /**
+     * @return the defaultLocation
+     */
+    public String getDefaultLocation() {
+    	return defaultLocation;
+    }
+	
+    /**
+     * @param defaultLocation the defaultLocation to set
+     */
+    public void setDefaultLocation(String defaultLocation) {
+    	this.defaultLocation = defaultLocation;
+    }
 }

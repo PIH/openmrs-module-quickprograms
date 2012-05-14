@@ -12,13 +12,9 @@
 		<description>Quick and clean programs management</description>
 		<name>quickPrograms</name>
 		<tag-class>org.openmrs.module.quickprograms.web.taglib.QuickProgramsTag</tag-class>
+		<body-content>JSP</body-content>
 		<attribute>
 			<name>patientId</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>stateIds</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -28,8 +24,13 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>stateIds</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>terminalStateIds</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
