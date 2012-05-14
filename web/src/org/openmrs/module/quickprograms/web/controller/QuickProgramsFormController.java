@@ -1,6 +1,7 @@
 package org.openmrs.module.quickprograms.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,47 +19,50 @@ import org.openmrs.module.programlocation.ProgramWorkflowService;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class QuickProgramsFormController {
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = Context.getDateFormat();
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true, 10)); 
+	}
 
-	@RequestMapping("/module/quickprograms/enrollInProgramWithStateOnDateAtLocation.form")
+	@SuppressWarnings("deprecation")
+    @RequestMapping("/module/quickprograms/enrollInProgramWithStateOnDateAtLocation.form")
 	public ModelAndView enroll(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	                           HttpServletResponse response,
+	                           @RequestParam("returnPage") String returnPage,
+	                           @RequestParam("patientId") Integer patientId,
+	                           @RequestParam("programId") Integer programId,
+	                           @RequestParam("programworkflowStateId") Integer stateId,
+	                           @RequestParam("dateEnrolled") Date enrollmentDate,
+	                           @RequestParam(value="locationId", required=false) Integer locationId
+	                           ) throws ServletException, IOException {
 
 		// mostly stolen from the ProgramLocation code, which usually isn't a good idea...
-		String returnPage = request.getParameter("returnPage");
 		if (returnPage == null) {
-			throw new IllegalArgumentException(
-					"must specify a returnPage parameter in a call to enroll()");
+			throw new IllegalArgumentException("must specify a returnPage parameter in a call to enroll()");
 		}
 
-		String patientIdStr = request.getParameter("patientId");
-		String programIdStr = request.getParameter("programId");
-		String enrollmentDateStr = request.getParameter("dateEnrolled");
-		String locationIdStr = request.getParameter("locationId");
-		String stateIdStr = request.getParameter("programworkflowStateId");
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		
 		ProgramWorkflowService pws = Context.getService(ProgramWorkflowService.class);
+		Program program = pws.getProgram(programId);
+		ProgramWorkflowState state = pws.getState(stateId);
 
-		// make sure we parse dates the same was as if we were using the
-		// initBinder + property editor method
-		CustomDateEditor cde = new CustomDateEditor(Context.getDateFormat(),
-				true, 10);
-		cde.setAsText(enrollmentDateStr);
-		Date enrollmentDate = (Date) cde.getValue();
-		Patient patient = Context.getPatientService().getPatient(Integer.valueOf(patientIdStr));
-		Location location;
-		try {
-			location = Context.getLocationService().getLocation(
-					Integer.valueOf(locationIdStr));
-		} catch (Exception e) {
-			location = null;
+		Location location = null;
+		if (locationId != null) {
+			location = Context.getLocationService().getLocation(locationId);
 		}
-		Program program = pws.getProgram(Integer.valueOf(programIdStr));
-		ProgramWorkflowState state = Context.getProgramWorkflowService().getState(new Integer(stateIdStr));
 
 		// enroll patient
 		PatientProgram pp = enrollInProgram(request, patient, program, enrollmentDate, location, null);
@@ -72,16 +76,15 @@ public class QuickProgramsFormController {
 			Patient patient, Program program, Date enrollmentDate,
 			Location location, Date completionDate) {
 
-		ProgramWorkflowService pws = Context
-				.getService(ProgramWorkflowService.class);
+		ProgramWorkflowService pws = Context.getService(ProgramWorkflowService.class);
 		List<org.openmrs.PatientProgram> pps = pws.getPatientPrograms(patient,
 				program, null, completionDate, enrollmentDate, null, false);
 
 		if (!pps.isEmpty()) {
-			request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
-					"Program.error.already");
+			request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Program.error.already");
 			return null;
-		} else {
+		} 
+		else {
 			PatientProgram pp = new PatientProgram();
 			pp.setPatient(patient);
 			pp.setLocation(location);
