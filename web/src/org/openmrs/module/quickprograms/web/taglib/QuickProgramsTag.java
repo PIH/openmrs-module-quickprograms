@@ -14,7 +14,6 @@
 package org.openmrs.module.quickprograms.web.taglib;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -190,7 +189,7 @@ public class QuickProgramsTag extends BodyTagSupport {
 	 * Utility method for constructing a date field
 	 */
 	private String dateTag(String id, String name) {
-		String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+		String today = Context.getDateFormat().format(new Date());
 		return "<input type=\"text\" id=\"" + id + "\" name=\"" + name + "\" size=\"10\" onClick=\"showCalendar(this)\" value=\"" + today + "\" />";
 	}
 
