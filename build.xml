@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!-- ********************************************************* -->
-<!-- ** Module                                              ** -->
+<!-- ** Quick Programs                                      ** -->
 <!-- **	                                                    ** -->
 <!-- ** @author                                             ** -->
 <!-- ** @version 1.0                                        ** -->
 <!-- ********************************************************* -->
-<project name="Module" default="package-module">
+<project name="Quick Programs" default="package-module">
 
     <property name="openmrs.data.dir"   location="${user.home}/.OpenMRS"/>
 
