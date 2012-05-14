@@ -11,31 +11,45 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.quickprograms.extension.html;
+package org.openmrs.module.quickprograms.web.extension;
 
 import org.openmrs.module.web.extension.BoxExt;
 
+/**
+ * The Extension adds the Quick Programs section to the top of the Overview tab
+ * on the Patient Dashboard
+ */
 public class QuickProgramsBoxExt extends BoxExt {
 
+	/**
+	 * @see BoxExt#getRequiredPrivilege()
+	 */
 	@Override
 	public String getRequiredPrivilege() {
-		return "View Patients";
+		return "Edit Patient Programs";
 	}
 
+	/**
+	 * @see BoxExt#getPortletUrl()
+	 */
 	@Override
 	public String getPortletUrl() {
 		return "quickPrograms";
 	}
 
+	/**
+	 * @see BoxExt#getTitle()
+	 */
 	@Override
 	public String getTitle() {
-		return "Quick Programs";
+		return "quickprograms.sectionTitle";
 	}
 
+	/**
+	 * @see BoxExt#getContent()
+	 */
 	@Override
 	public String getContent() {
-		return "";
+		return "quickprograms.sectionContent";
 	}
-	
-	
 }

@@ -24,17 +24,16 @@ public class QuickProgramsActivator implements Activator {
 	private Log log = LogFactory.getLog(this.getClass());
 	
 	/**
-	 * @see org.openmrs.module.Activator#startup()
+	 * @see Activator#startup()
 	 */
 	public void startup() {
 		log.info("Starting Quick Programs Module...");
-  }
+	}
 	
 	/**
-	 * @see org.openmrs.module.Activator#shutdown()
+	 * @see Activator#shutdown()
 	 */
 	public void shutdown() {
 		log.info("Shutting down Quick Programs Module...");
 	}
-
 }

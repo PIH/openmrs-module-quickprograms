@@ -21,15 +21,14 @@
 		<require_module>org.openmrs.module.programlocation</require_module>
 	</require_modules>
 
+	<extension>
+		<point>org.openmrs.patientDashboard.overviewBox</point>
+		<class>org.openmrs.module.quickprograms.web.extension.QuickProgramsBoxExt</class>
+	</extension>
+	
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
 	</messages>
-	
-	<extension>
-		<point>org.openmrs.patientDashboard.overviewBox</point>
-		<class>org.openmrs.module.quickprograms.extension.html.QuickProgramsBoxExt</class>
-	</extension>
 
 </module>
-
